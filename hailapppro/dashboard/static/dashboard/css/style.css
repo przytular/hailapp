@@ -1,7 +1,7 @@
 html, body { height: 100%; }
 
 .navbar {
-  height: 5vh;
+  min-height: 60px;
   z-index: 3;
   background-color: #22528e;
 }
@@ -23,7 +23,7 @@ html, body { height: 100%; }
 }
 
 #wrapper {
-    height: 95vh;
+    height: calc(100% - 60px);
     display: flex;
     align-items: stretch;
 }
@@ -58,7 +58,7 @@ html, body { height: 100%; }
 
 #sidebarCollapse {
   position: absolute;
-  top: 140px;
+  top: 160px;
   cursor: pointer;
   background-color: #22528e;
   border-radius: 0;

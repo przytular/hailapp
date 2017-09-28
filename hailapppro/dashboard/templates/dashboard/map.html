@@ -46,10 +46,10 @@
 
   <script>
     function initMap() {
-      var center = {lat: 53.826175, lng: -87.227612};
+      var center = {lat: 57.801800, lng: -101.659825};
 
       var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 4,
+        zoom: 6,
         center: center
       });
 
@@ -62,6 +62,10 @@
      $(document).ready(function () {
          $('#sidebarCollapse').on('click', function () {
              $('#sidebar').toggleClass('active');
+             setTimeout(function () {
+               google.maps.event.trigger(map, "resize");
+             }, 1000);
+
          });
      });
   </script>
