@@ -27,11 +27,11 @@
       </a>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-item nav-link active" href="#">Map <span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link" href="#">Send Claims</a>
-          <a class="nav-item nav-link" href="#">Open Claims</a>
-          <a class="nav-item nav-link" href="#">Completed Claims</a>
-          <a class="nav-item nav-link" href="#">Adjusters</a>
+          <a class="nav-item nav-link active" href="{% url 'map' %}">Map</a>
+          <a class="nav-item nav-link" href="{% url 'send_claim' %}">Send Claim</a>
+          <a class="nav-item nav-link" href="{% url 'open_claims' %}">Open Claims</a>
+          <a class="nav-item nav-link" href="{% url 'completed_claims' %}">Completed Claims</a>
+          <a class="nav-item nav-link" href="{% url 'adjusters' %}">Adjusters</a>
         </div>
       </div>
     </nav>
