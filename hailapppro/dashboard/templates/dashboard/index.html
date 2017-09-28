@@ -1,46 +1,68 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
 {% block content %}
-<nav class="navbar navbar-toggleable-md navbar-inverse">
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <a class="navbar-brand" href="#">
-    <img src="{% static 'dashboard/gfx/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-    Hail Loss Pro
-  </a>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="#">Map <span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" href="#">Send Claims</a>
-      <a class="nav-item nav-link" href="#">Open Claims</a>
-      <a class="nav-item nav-link" href="#">Completed Claims</a>
-      <a class="nav-item nav-link" href="#">Adjusters</a>
+<nav id="sidebar">
+  <div class="adjuster">
+    <div class="photo">
+      <img src="{% static 'dashboard/gfx/person-placeholder.png' %}" />
+    </div>
+    <div class="details">
+      <p class="name">Your First Adjuster Worker</p>
+      <p class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i> +44 593 394 951</p>
+      <p class="email"><i class="fa fa-envelope-o" aria-hidden="true"></i> username@example.com</p>
+      <a href="#" class="btn btn-primary btn-sm btn-block">Show profile</a>
+    </div>
+  </div>
+  <div class="adjuster">
+    <div class="photo">
+      <img src="{% static 'dashboard/gfx/person-placeholder.png' %}" />
+    </div>
+    <div class="details">
+      <p class="name">Your First Adjuster Worker</p>
+      <p class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i> +44 593 394 951</p>
+      <p class="email"><i class="fa fa-envelope-o" aria-hidden="true"></i> username@example.com</p>
+      <a href="#" class="btn btn-primary btn-sm btn-block">Show profile</a>
     </div>
   </div>
 </nav>
-  <div class="row no-gutters">
-    <div id="adjusters_list" class="col-sm-3">
-      
-    </div>
-    <div id="mapbox" class="col-sm-9">
-      <div id="map"></div>
-          <script>
-            function initMap() {
-              var uluru = {lat: -25.363, lng: 131.044};
-              var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 4,
-                center: uluru
-              });
-              var marker = new google.maps.Marker({
-                position: uluru,
-                map: map
-              });
-            }
-          </script>
-          <script async defer
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcDv5J2zrifQvbyx4Xji1VHCU7HP95dRY&callback=initMap">
-          </script>
-    </div>
-  </div>
+
+<div id="content">
+
+    <button type="button" id="sidebarCollapse" class="btn btn-primary navbar-btn">
+        <i class="glyphicon glyphicon-align-left"></i>
+        <span><i class="fa fa-address-book"></i></span>
+    </button>
+
+    <div id="map"></div>
+
+</div>
+
 {% endblock content %}
+
+{% block extendfoot %}
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcDv5J2zrifQvbyx4Xji1VHCU7HP95dRY&callback=initMap">
+  </script>
+
+  <script>
+    function initMap() {
+      var center = {lat: 53.826175, lng: -87.227612};
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: center
+      });
+
+      var marker = new google.maps.Marker({
+        position: center,
+        map: map
+      });
+    }
+
+     $(document).ready(function () {
+         $('#sidebarCollapse').on('click', function () {
+             $('#sidebar').toggleClass('active');
+         });
+     });
+  </script>
+{% endblock extendfoot %}
