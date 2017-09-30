@@ -1,4 +1,43 @@
 {% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block extendhead %}
+<link rel="stylesheet" type="text/css" href="{% static 'dashboard/css/adjusters.css' %}" />
+{% endblock extendhead %}
+
 {% block content %}
-<p class="indev">In development.</p>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>
+        Adjusters Profiles
+      </h1>
+      <a class="btn btn-primary btn-sm" href="{% url 'create_adjuster' %}"><i class="fa fa-plus" aria-hidden="true"></i> Create new account</a>
+    </div>
+  </div>
+  {% for adjuster in adjusters %}
+  <div class="row">
+    <div class="adjuster-wrapper col-xs-12">
+      <div class="adjuster">
+        <div class="photo">
+          <img src="{{ adjuster.photo.url }}" />
+        </div>
+        <div class="details">
+          <p class="name">{{ adjuster.first_name }} {{ adjuster.last_name }}</p>
+          <p class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i> {{ adjuster.phone }}</p>
+          <p class="email"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{ adjuster.email }}</p>
+          <p class="claims"><i class="fa fa-file" aria-hidden="true"></i> Claims:
+          {% for claim in adjuster.claim_set.all %}
+            <a href="#claim_details">{{ claim.policy_no }}
+          {% empty %}
+            No assigned claims.
+          {% endfor %}
+          </p>
+          <a href="#" class="btn btn-primary btn-sm btn-block">Show profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}

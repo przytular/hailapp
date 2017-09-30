@@ -1,29 +1,32 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
+
+{% block extendhead %}
+<style>
+#wrapper {
+  padding-top: 0;
+  height: calc(100% - 60px);
+  display: flex;
+  align-items: stretch;
+}
+</style>
+{% endblock extendhead %}
+
 {% block content %}
 <nav id="sidebar">
-  <div class="adjuster">
-    <div class="photo">
-      <img src="{% static 'dashboard/gfx/person-placeholder.png' %}" />
+  {% for adjuster in adjusters %}
+    <div class="adjuster">
+      <div class="photo">
+        <img src="{{ adjuster.photo.url }}" />
+      </div>
+      <div class="details">
+        <p class="name">{{ adjuster.first_name }} {{ adjuster.last_name }}</p>
+        <p class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i> {{ adjuster.phone }}</p>
+        <p class="email"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{ adjuster.email }}</p>
+        <a href="#" class="btn btn-primary btn-sm btn-block">Show profile</a>
+      </div>
     </div>
-    <div class="details">
-      <p class="name">Your First Adjuster Worker</p>
-      <p class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i> +44 593 394 951</p>
-      <p class="email"><i class="fa fa-envelope-o" aria-hidden="true"></i> username@example.com</p>
-      <a href="#" class="btn btn-primary btn-sm btn-block">Show profile</a>
-    </div>
-  </div>
-  <div class="adjuster">
-    <div class="photo">
-      <img src="{% static 'dashboard/gfx/person-placeholder.png' %}" />
-    </div>
-    <div class="details">
-      <p class="name">Your First Adjuster Worker</p>
-      <p class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i> +44 593 394 951</p>
-      <p class="email"><i class="fa fa-envelope-o" aria-hidden="true"></i> username@example.com</p>
-      <a href="#" class="btn btn-primary btn-sm btn-block">Show profile</a>
-    </div>
-  </div>
+  {% endfor %}
 </nav>
 
 <div id="content">
