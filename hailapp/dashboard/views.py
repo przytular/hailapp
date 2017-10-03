@@ -8,7 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
 from .models import Adjuster, Claim
-
+from django.utils.decorators import method_decorator
 
 @method_decorator(login_required, name='dispatch')
 class MapView(TemplateView):
