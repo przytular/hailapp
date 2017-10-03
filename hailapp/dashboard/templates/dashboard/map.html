@@ -32,8 +32,8 @@
     <script>
 
     adj_locations.push({'name': '{{ adjuster.first_name }} {{ adjuster.last_name }}',
-                        'lat' '{{ adjuster.lat }}',
-                        'lng', '{{ adjuster.lng }}'})
+                        'lat': '{{ adjuster.lat }}',
+                        'lng': '{{ adjuster.lng }}'})
 
     </script>
   {% endfor %}
@@ -67,11 +67,12 @@
       });
 
       adj_locations.forEach(function(adj) {
-        console.log(adj);
-      });
-      var marker = new google.maps.Marker({
-        position: center,
-        map: map
+        var marker = new google.maps.Marker({
+          title: adj['name'],
+          position: new google.maps.LatLng(adj['lat'], adj['lng']),
+          map: map
+        });
+        console.log(marker);
       });
     }
 
