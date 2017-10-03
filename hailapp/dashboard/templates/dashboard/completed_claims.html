@@ -1,4 +1,27 @@
 {% extends 'dashboard/base.html' %}
 {% block content %}
-<p class="indev">In development.</p>
+
+<div class="container">
+<h1>Completed claims</h1>
+<table class="table">
+<tbody>
+	<thead>
+		<tr>
+			<th>Created</th>
+			<th>Client</th>
+			<th>Assigned</th>
+			<th>Policy No.</th>
+		</tr>
+	</thead>
+	{% for obj in claims %}
+	<tr>
+		<td>{{ obj.created }}</td>
+		<td>{{ obj.first_name }} {{ obj.last_name }}</td>
+		<td>{{ obj.assigned }}</td>
+		<td>{{ obj.policy_no }}</td>
+		<!-- <td><a href="#" class="btn btn-sm btn-link">Details</a></td> -->
+	</tr>
+	{% endfor %}
+</table>
+</div>
 {% endblock %}

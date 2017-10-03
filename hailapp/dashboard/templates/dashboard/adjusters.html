@@ -10,9 +10,8 @@
   <div class="row">
     <div class="col-xs-12">
       <h1>
-        Adjusters Profiles
+        Adjusters <small><a id="create_adjuster_btn" class="btn btn-primary btn-sm" href="{% url 'create_adjuster' %}"><i class="fa fa-user-plus" aria-hidden="true"></i> Create new</a></small>
       </h1>
-      <a class="btn btn-primary btn-sm" href="{% url 'create_adjuster' %}"><i class="fa fa-plus" aria-hidden="true"></i> Create new account</a>
     </div>
   </div>
   {% for adjuster in adjusters %}
@@ -33,7 +32,7 @@
             No assigned claims.
           {% endfor %}
           </p>
-          <a href="#" class="btn btn-primary btn-sm btn-block">Show profile</a>
+          <a href="{% url 'show_adjuster' adjuster.pk %}" class="btn btn-primary btn-sm btn-block">Show profile</a>
         </div>
       </div>
     </div>

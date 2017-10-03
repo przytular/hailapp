@@ -1,6 +1,6 @@
 html, body { height: 100%; }
 
-h1 { font-size: 1.8rem; }
+h1 { font-size: 1.6rem; margin-bottom: 1rem;margin-top:1rem;}
 
 .navbar {
   min-height: 60px;
@@ -102,3 +102,28 @@ h1 { font-size: 1.8rem; }
 /* ---------------------------------------------------
     ADJUSTERS
 ----------------------------------------------------- */
+
+.adjuster-profile {
+  margin-top:1rem;
+}
+.adjuster-profile .photo {
+  float: left;
+  width: 100px;
+  vertical-align: top;
+  margin-right: 1rem;
+}
+
+.adjuster-profile .details {
+  float: left;
+}
+.adjuster-profile .details .name {
+  font-weight: bold;
+}
+.adjuster-profile .details .phone, .adjuster-profile .details .email {
+  font-size:0.8rem;
+
+}
+#create_adjuster_btn {
+  margin-top:-5px;
+  margin-left: 10px;
+}

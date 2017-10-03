@@ -1,10 +1,13 @@
 {% extends 'dashboard/base.html' %}
+{% load bootstrap_forms %}
 
 {% block content %}
-<form action="" method="post">
-  {% csrf_token %}
-    {{ form.as_p }}
-    whatevere
-    <input type="submit" value="Create" />
-</form>
+<div class="container">
+	<form action="" method="post">
+	  {% csrf_token %}
+	    {{ form|as_bootstrap }}
+	    <input type="submit" value="Save" class="btn btn-primary"/>
+	    <a href="{% url 'adjusters' %}" class="btn btn-danger">Cancel</a>
+	</form>
+</div>
 {% endblock content %}

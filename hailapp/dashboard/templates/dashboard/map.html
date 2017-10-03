@@ -10,6 +10,9 @@
   align-items: stretch;
 }
 </style>
+<script type="text/javascript">
+  var adj_locations = [];
+</script>
 {% endblock extendhead %}
 
 {% block content %}
@@ -23,9 +26,16 @@
         <p class="name">{{ adjuster.first_name }} {{ adjuster.last_name }}</p>
         <p class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i> {{ adjuster.phone }}</p>
         <p class="email"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{ adjuster.email }}</p>
-        <a href="#" class="btn btn-primary btn-sm btn-block">Show profile</a>
+        <a href="{% url 'show_adjuster' adjuster.pk %}" class="btn btn-primary btn-sm btn-block">Show profile</a>
       </div>
     </div>
+    <script>
+
+    adj_locations.push({'name': '{{ adjuster.first_name }} {{ adjuster.last_name }}',
+                        'lat' '{{ adjuster.lat }}',
+                        'lng', '{{ adjuster.lng }}'})
+
+    </script>
   {% endfor %}
 </nav>
 
@@ -56,6 +66,9 @@
         center: center
       });
 
+      adj_locations.forEach(function(adj) {
+        console.log(adj);
+      });
       var marker = new google.maps.Marker({
         position: center,
         map: map

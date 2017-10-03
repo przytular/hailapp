@@ -10,6 +10,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
     <link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'dashboard/css/font-awesome.min.css' %}" />
     <script src="{% static 'dashboard/js/jquery-3.2.1.min.js' %}"></script>
@@ -22,7 +23,7 @@
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="{% url 'map' %}">
         <img src="{% static 'dashboard/gfx/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
         Hail Loss Pro
       </a>

@@ -1,0 +1,24 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<br />
+			<a href="{% url 'update_adjuster' object.pk %}" class="btn btn-sm btn-primary">Update profile</a>
+			<a href="#" class="btn btn-sm btn-danger">Delete profile</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="adjuster-profile col-xs-12">
+			<img class="photo" src="{{ object.photo.url }}" />
+			<div class="details">
+				<p class="name">{{ object.first_name }} {{ object.last_name }}</p>
+				<p class="phone">Phone: {{ object.phone }}</p>
+				<p class="email">E-mail: {{ object.email }}</p>
+			</div>
+		</div>
+	</div>
+</div>
+<p>
+{% endblock content %}
