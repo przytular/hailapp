@@ -1,7 +1,7 @@
 html, body { height: 100%; }
 
 h1 { font-size: 1.6rem; margin-bottom: 1rem;margin-top:1rem;}
-
+h3 { margin-top:1rem; }
 .navbar {
   min-height: 60px;
   z-index: 3;
@@ -123,7 +123,27 @@ h1 { font-size: 1.6rem; margin-bottom: 1rem;margin-top:1rem;}
   font-size:0.8rem;
 
 }
+
 #create_adjuster_btn {
   margin-top:-5px;
   margin-left: 10px;
+}
+
+.smfield {
+  padding-right: 1rem;
+  padding-left: 0;
+}
+
+#new_field_btn {
+  margin-top: 1rem;
+}
+
+.field_fields {
+  margin-top: 1rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 2px dashed #ccc;
+}
+
+#submit_claim {
+  margin-top: 1rem;
 }

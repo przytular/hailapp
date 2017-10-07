@@ -5,7 +5,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Reassignment for a claim</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Claim reassignment</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -46,7 +46,7 @@
 	<tr>
 		<td>{{ obj.created }}</td>
 		<td>{{ obj.first_name }} {{ obj.last_name }}</td>
-		<td>{{ obj.assigned }} <a data-toggle="modal" data-target="#assigned_modal" href="#"><i class="fa fa-repeat" data-claim="{{ obj.id }}" aria-hidden="true"></i></a></td>
+		<td>{{ obj.assigned_adjuster }} <a data-toggle="modal" data-target="#assigned_modal" href="#"><i class="fa fa-repeat" data-claim="{{ obj.id }}" aria-hidden="true"></i></a></td>
 		<td>{{ obj.policy_no }}</td>
 		<td>
 			<a href="{% url 'update_claim' obj.pk %}" class="btn btn-sm btn-link">Update</a>

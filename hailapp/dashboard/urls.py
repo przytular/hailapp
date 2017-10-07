@@ -1,12 +1,15 @@
 from django.conf.urls import url
 from .views import MapView, SendClaimView, OpenClaimsView, \
                    CompletedClaimsView, AdjustersView, CreateAdjusterView, \
-                   AdjusterProfileView, AdjusterProfileUpdateView, UpdateClaimsView
+                   AdjusterProfileView, AdjusterProfileUpdateView, UpdateClaimsView, \
+                   AdjusterDelete, login_view
 
 from rest_framework.authtoken import views
 from api.views import LocationUpdate, ClaimsAPI, PushIDUpdateAPI, UpdateClaimAPIView
 
 urlpatterns = [
+
+    url(r'^accounts/login/$', login_view, name='login'),
 
 	### VIEWS
 
@@ -22,6 +25,8 @@ urlpatterns = [
     url(r'^adjusters/profile/(?P<pk>\d+)/update/$', AdjusterProfileUpdateView.as_view(), name='update_adjuster'),
     url(r'^adjusters/new/$', CreateAdjusterView.as_view(),
                                                     name='create_adjuster'),
+    url(r'^adjusters/delete/(?P<pk>\d+)/$', AdjusterDelete.as_view(),
+                                                    name='delete_adjuster'),    
 
     ### API
 
