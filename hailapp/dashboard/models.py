@@ -48,7 +48,6 @@ class Claim(models.Model):
     # Meta
     created = models.DateTimeField(auto_now_add=True)
     assigned_adjuster = models.ForeignKey(Adjuster, null=True, blank=True)
-    name = models.CharField(max_length=100, blank=True)
 
     # Client information
     first_name = models.CharField(max_length=50)

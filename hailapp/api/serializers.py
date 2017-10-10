@@ -7,7 +7,6 @@ class ClaimFieldSerializer(serializers.ModelSerializer):
 		model = ClaimField
 		fields = '__all__'
 
-
 class ClaimSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Claim

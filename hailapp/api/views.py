@@ -41,30 +41,10 @@ class PushIDUpdateAPI(APIView):
 			return Response({"details": "No push_id specified"})
 
 
-class UpdateClaimAPIView(APIView):
+class UpdateClaimAPIView(UpdateAPIView):
+	serializer_class = ClaimSerializer
+	queryset = Claim.objects.all()
 
-	def post(self, request, pk, format=None):
-		claim = get_object_or_404(Claim, pk=pk)
-		post = request.data
-		s = ClaimSerializer(data=post)
-		if s.is_valid():
-			s.save()
-		fields = post.get('fields', [])
-		for field in fields:
-			quarter, section, township, \
-			range, meridian = [x.strip() for x in field["location"].split("-")]
-
-			ClaimField.objects.create(claim=claim,
-									  type=field['type'],
-									  name=field['name'],
-									  acres=field['acres'],
-									  quarter=quarter,
-									  section=section,
-									  township=township,
-									  range=range,
-									  meridian=meridian,
-									  loss=field['loss'])
-		return Response("OK")
 
 class ClaimFieldsAPI(APIView):
 
@@ -73,21 +53,36 @@ class ClaimFieldsAPI(APIView):
 		return Response(ClaimFieldSerializer(fields, many=True).data)
 
 	def post(self, request, pk, format=None):
-		claim=get_object_or_404(Claim, pk=pk)
+		field_id = request.data.get('field_id', None)
+		if field_id:
+			claim_field = get_object_or_404(ClaimField, pk=field_id)
+			s = ClaimFieldSerializer(claim_field, data=request.data, partial=True)
+			if s.is_valid():
+				s.save()
+				return Response(s.data)
+			else:
+				return Response(s.errors)
 
-		fields = request.data
-		for field in fields:
-			quarter, section, township, \
-			range, meridian = [x.strip() for x in field["location"].split("-")]
+		else:
+			claim=get_object_or_404(Claim, pk=pk)
+			fields = request.data
+			old_fields = ClaimField.objects.filter(claim=claim)
+			for field in fields:
+				try:
+					quarter, section, township, \
+					range, meridian = [x.strip() for x in field["location"].split("-")]
+				except TypeError:
+					quarter, section, township, range, meridian = ('',)*5
 
-			ClaimField.objects.create(claim=claim,
-									  type=field['type'],
-									  name=field['name'],
-									  acres=field['acres'],
-									  quarter=quarter,
-									  section=section,
-									  township=township,
-									  range=range,
-									  meridian=meridian,
-									  loss=field['loss'])
-		return Response("OK")
+				ClaimField.objects.create(claim=claim,
+										  type=field['type'],
+										  name=field['name'],
+										  acres=field['acres'],
+										  quarter=quarter,
+										  section=section,
+										  township=township,
+										  range=range,
+										  meridian=meridian,
+										  loss=field['loss'])
+			old_fields.delete()
+			return Response(ClaimFieldSerializer(fields, many=True).data)
