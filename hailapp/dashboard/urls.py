@@ -5,7 +5,8 @@ from .views import MapView, SendClaimView, OpenClaimsView, \
                    AdjusterDelete, login_view
 
 from rest_framework.authtoken import views
-from api.views import LocationUpdate, ClaimsAPI, PushIDUpdateAPI, UpdateClaimAPIView
+from api.views import LocationUpdate, ClaimsAPI, PushIDUpdateAPI, UpdateClaimAPIView, \
+                      ClaimFieldsAPI
 
 urlpatterns = [
 
@@ -26,7 +27,7 @@ urlpatterns = [
     url(r'^adjusters/new/$', CreateAdjusterView.as_view(),
                                                     name='create_adjuster'),
     url(r'^adjusters/delete/(?P<pk>\d+)/$', AdjusterDelete.as_view(),
-                                                    name='delete_adjuster'),    
+                                                    name='delete_adjuster'),
 
     ### API
 
@@ -35,4 +36,6 @@ urlpatterns = [
     url(r'^api/claims/update/(?P<pk>\d+)$', UpdateClaimAPIView.as_view()),
     url(r'^api/pushid_update$', PushIDUpdateAPI.as_view()),
     url(r'^api/location-update$', LocationUpdate.as_view()),
+
+    url(r'^api/claimfields/(?P<pk>\d+)$', ClaimFieldsAPI.as_view()),
 ]

@@ -14,8 +14,8 @@ COUNTRIES = (
 )
 
 CLAIM_STATES = (
-    ('assigned', 'assigned'),
     ('started', 'started'),
+    ('assigned', 'assigned'),
     ('completed', 'completed')
 )
 
@@ -48,6 +48,7 @@ class Claim(models.Model):
     # Meta
     created = models.DateTimeField(auto_now_add=True)
     assigned_adjuster = models.ForeignKey(Adjuster, null=True, blank=True)
+    name = models.CharField(max_length=100, blank=True)
 
     # Client information
     first_name = models.CharField(max_length=50)
@@ -72,12 +73,13 @@ class ClaimField(models.Model):
     claim = models.ForeignKey(Claim)
     type = models.CharField(max_length=50, choices=FIELD_TYPES)
     name = models.CharField(max_length=50, blank=True)
-    acres = models.CharField(max_length=20)
+    acres = models.IntegerField()
     quarter = models.CharField(max_length=20, blank=True)
     section = models.CharField(max_length=20, blank=True)
     township = models.CharField(max_length=20, blank=True)
     range = models.CharField(max_length=20, blank=True)
     meridian = models.CharField(max_length=20, blank=True)
+    loss = models.DecimalField(default=0.0, max_digits=6, decimal_places=2)
 
 
 @receiver(post_save, sender=User)

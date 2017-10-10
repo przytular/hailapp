@@ -27,7 +27,7 @@ class MapView(TemplateView):
 class SendClaimView(CreateView):
     model = Claim
     form_class = ClaimForm
-    success_url = reverse_lazy('map')
+    success_url = reverse_lazy('open_claims')
 
     def get_context_data(self, *args, **kwargs):
         context = super(SendClaimView, self).get_context_data(*args, **kwargs)
@@ -125,31 +125,32 @@ class UpdateClaimsView(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
+        # context = self.get_context_data(**kwargs)
         instance = Claim.objects.get(pk=kwargs['pk'])
         form = ClaimForm(request.POST, instance=instance)
         if form.is_valid():
             obj = form.save()
             post = request.POST
-            print(context['form'])
+            fields = instance.claimfield_set.all()
             for i, x in enumerate(post.getlist('type')):
-                if x != '':
-                    type = post.getlist('type')[i]
-                    acres = post.getlist('acres')[i]
-                    quarter = post.getlist('quarter')[i]
-                    section = post.getlist('section')[i]
-                    township = post.getlist('township')[i]
-                    range = post.getlist('range')[i]
-                    meridian = post.getlist('meridian')[i]
+                type = post.getlist('type')[i]
+                acres = post.getlist('acres')[i]
+                quarter = post.getlist('quarter')[i]
+                section = post.getlist('section')[i]
+                township = post.getlist('township')[i]
+                range = post.getlist('range')[i]
+                meridian = post.getlist('meridian')[i]
 
-                    ClaimField.objects.create(claim=obj,
-                                              type=type,
-                                              acres=acres,
-                                              quarter=quarter,
-                                              section=section,
-                                              township=township,
-                                              range=range,
-                                              meridian=meridian)
+                ClaimField.objects.create(claim=obj,
+                                          type=type,
+                                          acres=acres,
+                                          quarter=quarter,
+                                          section=section,
+                                          township=township,
+                                          range=range,
+                                          meridian=meridian)
+            # Delete old fields
+            fields.delete()
 
         return HttpResponseRedirect(reverse_lazy('open_claims'))
 
