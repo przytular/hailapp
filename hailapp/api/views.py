@@ -83,6 +83,7 @@ class ClaimFieldsAPI(APIView):
 										  township=township,
 										  range=range,
 										  meridian=meridian,
-										  loss=field['loss'])
+										  loss=field['loss'],
+										  completed=field['completed'])
 			old_fields.delete()
 			return Response(ClaimFieldSerializer(fields, many=True).data)

@@ -80,6 +80,7 @@ class ClaimField(models.Model):
     range = models.CharField(max_length=20, blank=True)
     meridian = models.CharField(max_length=20, blank=True)
     loss = models.DecimalField(default=0.0, max_digits=6, decimal_places=2)
+    completed = models.BooleanField(default=False)
 
 
 @receiver(post_save, sender=User)
