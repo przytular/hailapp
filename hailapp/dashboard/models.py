@@ -35,6 +35,7 @@ class Adjuster(models.Model):
                         default='person-placeholder.png')
     lat = models.DecimalField(max_digits=12, decimal_places=8, null=True)
     lng = models.DecimalField(max_digits=12, decimal_places=8, null=True)
+    push_id = models.CharField(max_length=50, blank=True)
 
     def __unicode__(self):
         return "{} {}".format(self.first_name, self.last_name)
