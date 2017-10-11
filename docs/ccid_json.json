@@ -1,0 +1,55 @@
+[
+  {
+    "id": 1,
+    "created": "2017-10-03T19:08:52.092053Z",
+    "first_name": "Test",
+    "last_name": "Client",
+    "addr_street_1": "Address 1",
+    "addr_street_2": "",
+    "city": "City",
+    "region": "",
+    "zip_code": "",
+    "country": "canada",
+    "phone": "+44 594 250 19",
+    "policy_no": "123",
+    "loss_no": "333",
+    "date_of_loss": null,
+    "completed": false, //
+    "assigned": 1, // would be better to replace 2 fields with "state" field: "assigned", "started", "completed"
+    "fields": 
+    [
+      {
+      	"id": 0,
+  	    "type": "cereals", // there are 3 types: cereals (Wheat, Barley, Oats etc), oilseeds(Canola, Mustard etc) and pulses (Lentils, Peas, Flax etc)
+  	    "name": "Wheat",
+  	    "location": "NW - 1 - 2 - 3 - W4",
+  	    "acres": 40,
+  	    "loss": 0.0 // I'll be sending it back to you e.g. 0.128. -> 12.8% 
+      },
+      {
+      	"id": 1,
+  	    "type": "oilseeds", // there are 3 types: cereals (Wheat, Barley, Oats etc), oilseeds(Canola, Mustard etc) and pulses (Lentils, Peas, Flax etc)
+  	    "name": "Canola",
+  	    "location": "SE - 2 - 3 - 4 - W5",
+  	    "acres": 40,
+  	    "loss": 0.0
+      },
+      {
+      	"id": 2,
+  	    "type": "pulses", // there are 3 types: cereals (Wheat, Barley, Oats etc), oilseeds(Canola, Mustard etc) and pulses (Lentils, Peas, Flax etc)
+  	    "name": "Lentils",
+  	    "location": "NE - 9 - 8 - 7 - E1",
+  	    "acres": 40,
+  	    "loss": 0.0
+      },
+      {
+      	"id": 3,
+  	    "type": "oilseeds", // there are 3 types: cereals (Wheat, Barley, Oats etc), oilseeds(Canola, Mustard etc) and pulses (Lentils, Peas, Flax etc)
+  	    "name": "Mustard",
+  	    "location": "SW - 6 - 5 - 4 - D2",
+  	    "acres": 40,
+  	    "loss": 0.0
+      }
+	]
+  }
+]

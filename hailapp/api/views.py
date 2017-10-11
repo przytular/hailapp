@@ -35,7 +35,7 @@ class PushIDUpdateAPI(APIView):
 		push_id = request.POST.get('push_id', None)
 		if push_id:
 			request.user.adjuster.push_id = push_id
-			request.user.save()
+			request.user.adjuster.save()
 			return Response("OK")
 		else:
 			return Response({"details": "No push_id specified"})
