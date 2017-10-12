@@ -10,7 +10,7 @@ from api.serializers import ClaimSerializer, ClaimFieldSerializer, \
 from dashboard.models import Claim, ClaimField
 from rest_framework.generics import ListAPIView, UpdateAPIView, CreateAPIView
 from push_notifications.models import APNSDevice
-
+from rest_framework.exceptions import AuthenticationFailed
 
 class LocationUpdate(APIView):
 
@@ -31,7 +31,10 @@ class ClaimsAPI(ListAPIView):
 	serializer_class = ClaimSerializer
 
 	def get_queryset(self):
-		queryset = Claim.objects.filter(assigned_adjuster=self.request.user.adjuster)
+		try:
+			queryset = Claim.objects.filter(assigned_adjuster=self.request.user.adjuster)
+		except:
+			raise AuthenticationFailed
 		return queryset
 
 
@@ -72,26 +75,30 @@ class ClaimFieldsAPI(APIView):
 			fields = request.data
 			old_fields = ClaimField.objects.filter(claim=claim)
 
-			for field in fields:
-				try:
-					quarter, section, township, \
-					range, meridian = [x.strip() for x in field["location"].split("-")]
-				except TypeError:
-					quarter, section, township, range, meridian = ('',)*5
+			try:
+				for field in fields:
+					try:
+						quarter, section, township, \
+						range, meridian = [x.strip() for x in field["location"].split("-")]
+					except TypeError:
+						quarter, section, township, range, meridian = ('',)*5
 
-				ClaimField.objects.create(claim=claim,
-										  type=field['type'],
-										  name=field['name'],
-										  acres=field['acres'],
-										  quarter=quarter,
-										  section=section,
-										  township=township,
-										  range=range,
-										  meridian=meridian,
-										  loss=field['loss'],
-										  photo=field['photo'],
-										  completed=field['completed'])
-			old_fields.delete()
+					ClaimField.objects.create(claim=claim,
+											  type=field['type'],
+											  name=field['name'],
+											  acres=field['acres'],
+											  quarter=quarter,
+											  section=section,
+											  township=township,
+											  range=range,
+											  meridian=meridian,
+											  loss=field['loss'],
+											  photo=field['photo'],
+											  completed=field['completed'])
+				old_fields.delete()
+
+			except:
+				pass
 			return Response(ClaimFieldSerializer(fields, many=True).data)
 
 
