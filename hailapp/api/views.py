@@ -10,6 +10,7 @@ from dashboard.models import Claim, ClaimField
 from rest_framework.generics import ListAPIView, UpdateAPIView
 from push_notifications.models import APNSDevice
 
+
 class LocationUpdate(APIView):
 
 	def post(self,  request, format=None):

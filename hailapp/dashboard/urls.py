@@ -37,5 +37,5 @@ urlpatterns = [
     url(r'^api/pushid_update$', PushIDUpdateAPI.as_view()),
     url(r'^api/location-update$', LocationUpdate.as_view()),
 
-    url(r'^api/claimfields/(?P<pk>\d+)$', ClaimFieldsAPI.as_view()),
+    url(r'^api/claimfields/(?P<pk>\d+)$', ClaimFieldsAPI.as_view(), name='claim_fields'),
 ]

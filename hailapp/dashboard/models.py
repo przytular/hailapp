@@ -33,8 +33,8 @@ class Adjuster(models.Model):
     email = models.EmailField()
     photo = models.ImageField(upload_to='adjusters', blank=True,
                         default='person-placeholder.png')
-    lat = models.DecimalField(max_digits=12, decimal_places=8, null=True)
-    lng = models.DecimalField(max_digits=12, decimal_places=8, null=True)
+    lat = models.CharField(max_length=20)
+    lng = models.CharField(max_length=20)
 
     def __unicode__(self):
         return "{} {}".format(self.first_name, self.last_name)

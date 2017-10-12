@@ -1,6 +1,36 @@
 {% extends 'dashboard/base.html' %}
 {% block content %}
 
+
+<!-- Modal -->
+<div class="modal fade" id="hailloss" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Hail Loss Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table id="haillosstable" class="table table-striped">
+        	<thead>
+        		<th>Location</th>
+        		<th>Hail Loss</th>
+        	</thead>
+	        <tbody>
+
+	        </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="container">
 <h1>Completed claims</h1>
 <table class="table">
@@ -9,8 +39,9 @@
 		<tr>
 			<th>Created</th>
 			<th>Client</th>
-			<th>Assigned</th>
+			<th>Assigned to</th>
 			<th>Policy No.</th>
+			<th></th>
 		</tr>
 	</thead>
 	{% for obj in claims %}
@@ -20,10 +51,38 @@
 		<td>{{ obj.assigned }}</td>
 		<td>{{ obj.policy_no }}</td>
 		<td>
-			<a href="{% url 'update_claim' obj.pk %}?completed=1" class="btn btn-sm btn-link">Update</a>
+			<a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#hailloss" data-claim="{{ obj.pk }}">Show hail loss</a>
+			<a href="{% url 'update_claim' obj.pk %}?completed=1" class="btn btn-sm btn-warning">Update</a>
 		</td>
 	</tr>
 	{% endfor %}
 </table>
-</div>
-{% endblock %}
+</div
+>{% endblock %}
+
+{% block extendfoot %}
+<script>
+$('#hailloss').on('shown.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var claim_id = button.data('claim')
+
+  $.ajax({
+  	url: "/api/claimfields/" + claim_id
+  }).done(function (response) {
+  	$("#haillosstable tbody").html("");
+  	response.forEach(function (f) {
+		var add_string = "<tr><td>" +
+		f['quarter'] + " - " + 
+  		f['section'] + " - " + 
+  		f['township'] + " - " + 
+  		f['range'] + " - " + 
+  		f['meridian'] +
+  		"</td><td>"+f['loss']+"</td>"
+	  	$("#haillosstable tbody").append(add_string);
+  	});
+
+  });
+
+})
+</script>
+{% endblock extendfoot %}
