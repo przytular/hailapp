@@ -136,14 +136,16 @@ class UpdateClaimsView(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        # context = self.get_context_data(**kwargs)
         instance = Claim.objects.get(pk=kwargs['pk'])
         form = ClaimForm(request.POST, instance=instance)
         if form.is_valid():
             obj = form.save()
             post = request.POST
             fields = instance.claimfield_set.all()
+            fields.delete()
+
             for i, x in enumerate(post.getlist('type')):
+                print(x)
                 type = post.getlist('type')[i]
                 acres = post.getlist('acres')[i]
                 quarter = post.getlist('quarter')[i]
@@ -160,10 +162,10 @@ class UpdateClaimsView(TemplateView):
                                           township=township,
                                           range=range,
                                           meridian=meridian)
-            # Delete old fields
-            fields.delete()
-
-        return HttpResponseRedirect(reverse_lazy('open_claims'))
+        if request.GET.get('completed', None):
+            return HttpResponseRedirect(reverse_lazy('completed_claims'))
+        else:
+            return HttpResponseRedirect(reverse_lazy('open_claims'))
 
 @method_decorator(login_required, name='dispatch')
 class AdjusterDelete(DeleteView):

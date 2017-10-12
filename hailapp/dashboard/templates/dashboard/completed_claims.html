@@ -19,7 +19,9 @@
 		<td>{{ obj.first_name }} {{ obj.last_name }}</td>
 		<td>{{ obj.assigned }}</td>
 		<td>{{ obj.policy_no }}</td>
-		<!-- <td><a href="#" class="btn btn-sm btn-link">Details</a></td> -->
+		<td>
+			<a href="{% url 'update_claim' obj.pk %}?completed=1" class="btn btn-sm btn-link">Update</a>
+		</td>
 	</tr>
 	{% endfor %}
 </table>
