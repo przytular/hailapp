@@ -29,7 +29,7 @@ class ClaimsAPI(ListAPIView):
 	serializer_class = ClaimSerializer
 
 	def get_queryset(self):
-		queryset = Claim.objects.filter(assigned_adjuster=self.request.user)
+		queryset = Claim.objects.filter(assigned_adjuster=self.request.user.adjuster)
 		return queryset
 
 
