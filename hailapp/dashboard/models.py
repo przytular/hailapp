@@ -81,7 +81,7 @@ class ClaimField(models.Model):
     meridian = models.CharField(max_length=20, blank=True)
     loss = models.DecimalField(default=0.0, max_digits=6, decimal_places=2)
     completed = models.BooleanField(default=False)
-
+    photo = models.ImageField(upload_to='fields', blank=True, null=True)
 
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

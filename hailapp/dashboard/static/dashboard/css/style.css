@@ -152,3 +152,7 @@ h3 { margin-top:1rem; }
   cursor: pointer;
   float:right;
 }
+
+#hailloss .modal-dialog {
+  max-width: 700px !important;
+}

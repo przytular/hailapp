@@ -4,10 +4,11 @@ from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.serializers import ClaimSerializer, ClaimFieldSerializer
+from api.serializers import ClaimSerializer, ClaimFieldSerializer, \
+							ClaimFieldPhotoSerializer
 
 from dashboard.models import Claim, ClaimField
-from rest_framework.generics import ListAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, UpdateAPIView, CreateAPIView
 from push_notifications.models import APNSDevice
 
 
@@ -70,6 +71,7 @@ class ClaimFieldsAPI(APIView):
 			claim=get_object_or_404(Claim, pk=pk)
 			fields = request.data
 			old_fields = ClaimField.objects.filter(claim=claim)
+
 			for field in fields:
 				try:
 					quarter, section, township, \
@@ -87,6 +89,18 @@ class ClaimFieldsAPI(APIView):
 										  range=range,
 										  meridian=meridian,
 										  loss=field['loss'],
+										  photo=field['photo'],
 										  completed=field['completed'])
 			old_fields.delete()
 			return Response(ClaimFieldSerializer(fields, many=True).data)
+
+
+class ClaimFieldPhotoAPI(CreateAPIView):
+
+	def post(self, request, pk, format=None):
+		serializer = ClaimFieldPhotoSerializer(data=request.DATA, files=request.FILES)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data)
+		else:
+			return Response(serializer.errors)

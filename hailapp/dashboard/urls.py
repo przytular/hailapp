@@ -6,7 +6,7 @@ from .views import MapView, SendClaimView, OpenClaimsView, \
 
 from rest_framework.authtoken import views
 from api.views import LocationUpdate, ClaimsAPI, PushIDUpdateAPI, UpdateClaimAPIView, \
-                      ClaimFieldsAPI
+                      ClaimFieldsAPI, ClaimFieldPhotoAPI
 
 urlpatterns = [
 
@@ -38,4 +38,5 @@ urlpatterns = [
     url(r'^api/location-update$', LocationUpdate.as_view()),
 
     url(r'^api/claimfields/(?P<pk>\d+)$', ClaimFieldsAPI.as_view(), name='claim_fields'),
+    url(r'^api/claimfields/(?P<pk>\d+)/photo/upload$', ClaimFieldPhotoAPI.as_view()),
 ]

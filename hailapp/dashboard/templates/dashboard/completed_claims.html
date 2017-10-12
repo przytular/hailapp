@@ -15,6 +15,7 @@
       <div class="modal-body">
         <table id="haillosstable" class="table table-striped">
         	<thead>
+            <th>Field photo</th>
         		<th>Location</th>
         		<th>Hail Loss</th>
         	</thead>
@@ -71,13 +72,15 @@ $('#hailloss').on('shown.bs.modal', function (event) {
   }).done(function (response) {
   	$("#haillosstable tbody").html("");
   	response.forEach(function (f) {
-		var add_string = "<tr><td>" +
+		var add_string = "<tr>"+
+    "<td><img src='"+f['photo']+"' style='max-width:200px'></td>"+
+    "<td>" +
 		f['quarter'] + " - " + 
   		f['section'] + " - " + 
   		f['township'] + " - " + 
   		f['range'] + " - " + 
   		f['meridian'] +
-  		"</td><td>"+f['loss']+"</td>"
+  		"</td><td>%"+f['loss']+"</td>"
 	  	$("#haillosstable tbody").append(add_string);
   	});
 
