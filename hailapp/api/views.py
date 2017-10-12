@@ -8,7 +8,7 @@ from api.serializers import ClaimSerializer, ClaimFieldSerializer
 
 from dashboard.models import Claim, ClaimField
 from rest_framework.generics import ListAPIView, UpdateAPIView
-
+from push_notifications.models import APNSDevice
 
 class LocationUpdate(APIView):
 
@@ -26,16 +26,18 @@ class LocationUpdate(APIView):
 
 
 class ClaimsAPI(ListAPIView):
-	queryset = Claim.objects.all()
 	serializer_class = ClaimSerializer
+
+	def get_queryset(self):
+		queryset = Claim.objects.filter(assigned_adjuster=self.request.user)
+		return queryset
 
 
 class PushIDUpdateAPI(APIView):
 	def post(self, request, format=None):
 		push_id = request.POST.get('push_id', None)
 		if push_id:
-			request.user.adjuster.push_id = push_id
-			request.user.adjuster.save()
+			apns, crt = APNSDevice.objects.get_or_create(user=request.user, registration_id=push_id)
 			return Response("OK")
 		else:
 			return Response({"details": "No push_id specified"})

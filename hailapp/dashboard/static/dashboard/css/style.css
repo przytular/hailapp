@@ -147,3 +147,8 @@ h3 { margin-top:1rem; }
 #submit_claim {
   margin-top: 1rem;
 }
+
+.close_field_form {
+  cursor: pointer;
+  float:right;
+}

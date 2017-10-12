@@ -1,5 +1,11 @@
 {% extends 'dashboard/base.html' %}
 
+{% load static %}
+
+{% block extendhead %}
+<link rel="stylesheet" href="{% static 'dashboard/css/bootstrap-datepicker.standalone.css' %}" type="text/css" />
+{% endblock extendhead %}
+
 {% block content %}
 <div class="container">
 	<form action="" method="post">
@@ -89,7 +95,7 @@
 				</div>
 			</div>
 			<div class="col-sm-6">
-				
+
 			</div>
 			<div class="col-sm-12">
 			</div>
@@ -97,3 +103,23 @@
 	</form>
 </div>
 {% endblock %}
+
+{% block extendfoot %}
+<script src="{% static 'dashboard/js/bootstrap-datepicker.js' %}"></script>
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+	$('#id_date_of_loss').datepicker({
+		format: "yyyy-mm-dd"
+	});
+
+	var fields_form = $('.field_fields').clone()
+	$("#new_field_btn").on('click', function() {
+		f = fields_form.clone()
+		$("#fields-container").append(f);
+	});
+
+});
+</script>
+{% endblock extendfoot %}

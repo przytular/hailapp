@@ -35,7 +35,6 @@ class Adjuster(models.Model):
                         default='person-placeholder.png')
     lat = models.DecimalField(max_digits=12, decimal_places=8, null=True)
     lng = models.DecimalField(max_digits=12, decimal_places=8, null=True)
-    push_id = models.CharField(max_length=50, blank=True)
 
     def __unicode__(self):
         return "{} {}".format(self.first_name, self.last_name)
@@ -43,6 +42,7 @@ class Adjuster(models.Model):
     @property
     def full_name(self):
         return "{} {}".format(self.first_name, self.last_name)
+
 
 
 class Claim(models.Model):
@@ -62,7 +62,7 @@ class Claim(models.Model):
     # Loss information
     policy_no = models.CharField(max_length=50)
     loss_no = models.CharField(max_length=50, blank=True)
-    date_of_loss = models.DateTimeField(null=True, blank=True)
+    date_of_loss = models.DateField(null=True, blank=True)
     state = models.CharField(max_length=100, default='started', choices=CLAIM_STATES)
 
     class Meta:

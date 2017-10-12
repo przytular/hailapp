@@ -12,6 +12,8 @@ from .models import Adjuster, Claim, ClaimField
 from django.utils.decorators import method_decorator
 from .forms import NewAdjusterForm, ClaimForm, FieldForm
 from django.contrib.auth import authenticate, login
+from push_notifications.models import APNSDevice
+
 
 @method_decorator(login_required, name='dispatch')
 class MapView(TemplateView):
@@ -57,6 +59,15 @@ class SendClaimView(CreateView):
                                           township=township,
                                           range=range,
                                           meridian=meridian)
+
+        try:
+            user = self.object.assigned_adjuster.user
+            registered_apns = APNSDevice.objects.filter(user=user)
+
+            for apns in registered_apns:
+                apns.send_message("New claim available!")
+        except:
+            pass
 
         return response
 

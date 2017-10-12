@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'dashboard',
     'rest_framework',
     'rest_framework.authtoken',
-    'bootstrap'
+    'bootstrap',
+    'push_notifications'
 ]
 
 MIDDLEWARE = [
@@ -41,6 +42,10 @@ REST_FRAMEWORK = {
     # )
 }
 
+PUSH_NOTIFICATIONS_SETTINGS = {
+        "APNS_CERTIFICATE": os.path.join(BASE_DIR, 'cert.pem'),
+        "APNS_TOPIC": "com.ccid.HailLoss.Hail-Loss-Pro",
+}
 ROOT_URLCONF = '_core.urls'
 
 TEMPLATES = [

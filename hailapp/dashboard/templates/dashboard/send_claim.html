@@ -11,3 +11,10 @@
 	</form>
 </div>
 {% endblock content %}
+
+{% block extendfoot %}
+<script src="{% static 'dashboard/js/bootstrap-datepicker.js' %}"></script>
+<script>
+$('#id_date_of_loss').datepicker();
+</script>
+{% endblock extendfoot %}

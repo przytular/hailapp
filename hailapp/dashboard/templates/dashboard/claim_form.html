@@ -1,5 +1,9 @@
 {% extends 'dashboard/base.html' %}
-{% load bootstrap_forms %}
+{% load bootstrap_forms static %}
+
+{% block extendhead %}
+<link rel="stylesheet" href="{% static 'dashboard/css/bootstrap-datepicker.standalone.css' %}" type="text/css" />
+{% endblock extendhead %}
 
 {% block content %}
 <div class="container">
@@ -54,37 +58,38 @@
 					<div id="fields-container" >
 
 						<div class="field_fields">
-						<label for="crop_type">Crop type</label>
-						{{ field_form.type }}
-						<br/>
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-sm-6 smfield">
-									<label for="acres">Acres</label>
-									{{ field_form.acres }}
-								</div>
-								<div class="col-sm-6 smfield">
-									<label for="quarter">Quarter</label>
-									{{ field_form.quarter }}
-								</div>
-								<div class="col-sm-6 smfield">
-									<label for="section">Section</label>
-									{{ field_form.section }}
-								</div>
-								<div class="col-sm-6 smfield">
-									<label for="township">Township</label>
-									{{ field_form.township }}
-								</div>
-								<div class="col-sm-6 smfield">
-									<label for="range_">Range</label>
-									{{ field_form.range }}
-								</div>
-								<div class="col-sm-6 smfield">
-									<label for="meridian">Meridian</label>
-									{{ field_form.meridian }}
+							<div class="close_field_form">X</div>
+							<label for="crop_type">Crop type</label>
+							{{ field_form.type }}
+							<br/>
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col-sm-6 smfield">
+										<label for="acres">Acres</label>
+										{{ field_form.acres }}
+									</div>
+									<div class="col-sm-6 smfield">
+										<label for="quarter">Quarter</label>
+										{{ field_form.quarter }}
+									</div>
+									<div class="col-sm-6 smfield">
+										<label for="section">Section</label>
+										{{ field_form.section }}
+									</div>
+									<div class="col-sm-6 smfield">
+										<label for="township">Township</label>
+										{{ field_form.township }}
+									</div>
+									<div class="col-sm-6 smfield">
+										<label for="range_">Range</label>
+										{{ field_form.range }}
+									</div>
+									<div class="col-sm-6 smfield">
+										<label for="meridian">Meridian</label>
+										{{ field_form.meridian }}
+									</div>
 								</div>
 							</div>
-						</div>
 					</div>
 				</div>
 				<input id="new_field_btn" type="button" value="Add new field" class="btn btn-primary"/>
@@ -95,13 +100,28 @@
 {% endblock content %}
 
 {% block extendfoot %}
+<script src="{% static 'dashboard/js/bootstrap-datepicker.js' %}"></script>
 <script type="text/javascript">
 
 $(document).ready(function () {
+
+	$('#id_date_of_loss').datepicker({
+		format: "yyyy-mm-dd"
+	});
+
+	$(".close_field_form").on('click', function() {
+		$(this).parent().remove();
+	});
+
 	var fields_form = $('.field_fields').clone()
 	$("#new_field_btn").on('click', function() {
 		f = fields_form.clone()
 		$("#fields-container").append(f);
+
+		f.find(".close_field_form").on('click', function() {
+			$(this).parent().remove();
+		});
+
 	});
 
 });
