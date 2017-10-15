@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -75,6 +75,22 @@ class SendClaimView(CreateView):
 @method_decorator(login_required, name='dispatch')
 class OpenClaimsView(TemplateView):
     template_name = 'dashboard/open_claims.html'
+
+    def post(self, request, *args, **kwargs):
+        adj_id = request.POST.get('adjuster')
+        claim_id = request.POST.get('claim-id-send')
+        print(adj_id)
+        if adj_id:
+            claim = get_object_or_404(Claim, pk=claim_id)
+            if adj_id == "---":
+                claim.assigned_adjuster = None
+            else:
+                adjuster = get_object_or_404(Adjuster, pk=adj_id)
+                claim.assigned_adjuster = adjuster
+            claim.save()
+
+        return HttpResponseRedirect(reverse_lazy('open_claims'))
+
     def get_context_data(self, *args, **kwargs):
         context = super(OpenClaimsView, self).get_context_data(*args, **kwargs)
         context['claims'] = Claim.objects.filter(state__in=['assigned', 'started'])
@@ -145,7 +161,6 @@ class UpdateClaimsView(TemplateView):
             fields.delete()
 
             for i, x in enumerate(post.getlist('type')):
-                print(x)
                 type = post.getlist('type')[i]
                 acres = post.getlist('acres')[i]
                 quarter = post.getlist('quarter')[i]

@@ -53,9 +53,6 @@
 {% endblock content %}
 
 {% block extendfoot %}
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcDv5J2zrifQvbyx4Xji1VHCU7HP95dRY&callback=initMap">
-  </script>
 
   <script>
     function initMap() {
@@ -85,5 +82,9 @@
 
          });
      });
+  </script>
+
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcDv5J2zrifQvbyx4Xji1VHCU7HP95dRY&callback=initMap">
   </script>
 {% endblock extendfoot %}

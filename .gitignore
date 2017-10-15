@@ -3,4 +3,4 @@ env/
 db.sqlite3
 *.pem
 fabfile.py
-media/adjusters
+hailapp/media/fields/*

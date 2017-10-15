@@ -68,6 +68,14 @@ class Claim(models.Model):
     class Meta:
         ordering = ['created']
 
+    @property
+    def assigned(self):
+        aa = self.assigned_adjuster
+        if not aa:
+            return "No assignment"
+        else:
+            return aa
+
 
 class ClaimField(models.Model):
     claim = models.ForeignKey(Claim)

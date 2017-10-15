@@ -10,23 +10,26 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
+      <form method="POST">
       <div class="modal-body">
-        <form>
+        {% csrf_token %}
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Assign to</label>
-            <select id="adjuster" class="form-control">
+            <select id="adjuster" name="adjuster" class="form-control">
+              <option value="---">---</option>
             {% for adjuster in adjusters %}
             	<option value="{{ adjuster.pk }}">{{ adjuster.full_name }}</option>
             {% endfor %}
             </select>
           </div>
-          <input type="hidden" id="claim-id-send" />
-        </form>
+          <input type="hidden" name="claim-id-send" />
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <input type="submit" class="btn btn-primary" value="Save">
       </div>
+      </form>
     </div>
   </div>
 </div>
@@ -46,7 +49,7 @@
 	<tr>
 		<td>{{ obj.created }}</td>
 		<td>{{ obj.first_name }} {{ obj.last_name }}</td>
-		<td>{{ obj.assigned_adjuster }} <a data-toggle="modal" data-target="#assigned_modal" href="#"><i class="fa fa-repeat" data-claim="{{ obj.id }}" aria-hidden="true"></i></a></td>
+		<td>{{ obj.assigned }} <a data-toggle="modal" data-claim="{{ obj.pk }}" data-target="#assigned_modal" href="#"><i class="fa fa-repeat" data-claim="{{ obj.id }}" aria-hidden="true"></i></a></td>
 		<td>{{ obj.policy_no }}</td>
 		<td>
 			<a href="{% url 'update_claim' obj.pk %}" class="btn btn-sm btn-link">Update</a>
@@ -61,7 +64,7 @@
 $('#assigned_modal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget)
   var claim_id = button.data('claim')
-  $('#claim-id-send').val(claim_id)
+  $('input[name="claim-id-send"').val(claim_id)
 })
 </script>
 {% endblock %}

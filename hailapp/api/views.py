@@ -10,7 +10,7 @@ from api.serializers import ClaimSerializer, ClaimFieldSerializer, \
 from dashboard.models import Claim, ClaimField
 from rest_framework.generics import ListAPIView, UpdateAPIView, CreateAPIView
 from push_notifications.models import APNSDevice
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import PermissionDenied
 
 class LocationUpdate(APIView):
 
@@ -34,7 +34,7 @@ class ClaimsAPI(ListAPIView):
 		try:
 			queryset = Claim.objects.filter(assigned_adjuster=self.request.user.adjuster)
 		except:
-			raise AuthenticationFailed
+			raise PermissionDenied
 		return queryset
 
 
