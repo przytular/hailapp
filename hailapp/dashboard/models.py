@@ -65,6 +65,10 @@ class Claim(models.Model):
     date_of_loss = models.DateField(null=True, blank=True)
     state = models.CharField(max_length=100, default='started', choices=CLAIM_STATES)
 
+
+    def __unicode__(self):
+        return "{} {}".format(self.first_name, self.last_name)
+
     class Meta:
         ordering = ['created']
 
