@@ -42,7 +42,14 @@ class PushIDUpdateAPI(APIView):
 	def post(self, request, format=None):
 		push_id = request.POST.get('push_id', None)
 		if push_id:
-			apns, crt = APNSDevice.objects.get_or_create(user=request.user, registration_id=push_id)
+
+			try:
+				apns = APNSDevice.objects.get(user=request.user)
+				apns.registration_id = push_id
+			except APNSDevice.DoesNotExist:
+				APNSDevice.objects.create(user=request.user, registration_id=push_id)
+
+			apns.save()
 			return Response("OK")
 		else:
 			return Response({"details": "No push_id specified"})
