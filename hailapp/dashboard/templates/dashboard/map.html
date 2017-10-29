@@ -18,7 +18,7 @@
 {% block content %}
 <nav id="sidebar">
   {% for adjuster in adjusters %}
-    <div class="adjuster">
+    <div id="adjuster-{{ adjuster.pk }}" class="adjuster">
       <div class="photo">
         <img src="{{ adjuster.photo.url }}" />
       </div>
@@ -33,7 +33,8 @@
 
     adj_locations.push({'name': '{{ adjuster.first_name }} {{ adjuster.last_name }}',
                         'lat': '{{ adjuster.lat }}',
-                        'lng': '{{ adjuster.lng }}'})
+                        'lng': '{{ adjuster.lng }}',
+                        'id': '{{ adjuster.id }}'})
 
     </script>
   {% endfor %}
@@ -53,38 +54,68 @@
 {% endblock content %}
 
 {% block extendfoot %}
+<script>
 
-  <script>
-    function initMap() {
-      var center = {lat: 57.801800, lng: -101.659825};
+  var markers = [];
+  var map = undefined;
 
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 6,
-        center: center
+  function initMap() {
+    var center = {lat: 57.801800, lng: -101.659825};
+
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 6,
+      center: center
+    });
+
+    adj_locations.forEach(function(adj) {
+
+      var marker = new google.maps.Marker({
+        title: adj['name'],
+        animation: google.maps.Animation.DROP,
+        position: new google.maps.LatLng(adj['lat'], adj['lng']),
+        map: map,
+        id: adj['id'],
+        icon: "{% static 'dashboard/gfx/adjuster_map_icon.png' %}"
       });
 
-      adj_locations.forEach(function(adj) {
-        var marker = new google.maps.Marker({
-          title: adj['name'],
-          position: new google.maps.LatLng(adj['lat'], adj['lng']),
-          map: map
+      marker.addListener('mouseover', function (m) {
+        $(".adjuster#adjuster-"+adj['id']).addClass('focused');
+      });
+
+      marker.addListener('mouseout', function (m) {
+        $(".adjuster#adjuster-"+adj['id']).removeClass('focused');
+      });
+      markers.push(marker);
+
+    });
+
+    markers.forEach(function (marker) {
+      m_box = document.getElementById('adjuster-'+marker.id);
+      m_box.addEventListener('mouseover', function (m) {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        map.setCenter(marker.getPosition());
+        m_box.addEventListener('mouseout', function (m) {
+          marker.setAnimation(null);
         });
-        console.log(marker);
       });
-    }
 
-     $(document).ready(function () {
-         $('#sidebarCollapse').on('click', function () {
-             $('#sidebar').toggleClass('active');
-             setTimeout(function () {
-               google.maps.event.trigger(map, "resize");
-             }, 1000);
+    });
+  }
 
-         });
-     });
-  </script>
+$(document).ready(function () {
 
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcDv5J2zrifQvbyx4Xji1VHCU7HP95dRY&callback=initMap">
-  </script>
+   $('#sidebarCollapse').on('click', function () {
+       $('#sidebar').toggleClass('active');
+       setTimeout(function () {
+         google.maps.event.trigger(map, "resize");
+       }, 1000);
+
+   });
+
+});
+</script>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcDv5J2zrifQvbyx4Xji1VHCU7HP95dRY&callback=initMap">
+</script>
 {% endblock extendfoot %}

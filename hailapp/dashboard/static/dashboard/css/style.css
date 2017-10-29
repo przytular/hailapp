@@ -47,11 +47,9 @@ h3 { margin-top:1rem; }
     min-width: 370px;
     max-width: 370px;
     background: #FFF;
-    border-right: 2px solid #22528e;
+    border-right: 3px solid #22528e;
     color: #000;
     transition: all 0.3s;
-    padding-left:1rem;
-    padding-right:1rem;
 }
 
 #sidebar.active {
@@ -70,7 +68,13 @@ h3 { margin-top:1rem; }
 .adjuster {
   display: table;
   width: 100%;
-  margin-top: 1rem;
+  padding: 1rem 1rem;
+  transition: 0.3s;
+}
+
+.adjuster.focused, .adjuster:hover {
+  background-color: #22528e;
+  color: #FFFFFF;
 }
 
 .adjuster .photo { display: table-cell; width: 100px; vertical-align: top}
