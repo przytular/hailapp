@@ -65,7 +65,7 @@ class Claim(models.Model):
     loss_no = models.CharField(max_length=50, blank=True)
     date_of_loss = models.DateField(null=True, blank=True)
     state = models.CharField(max_length=100, default='started', choices=CLAIM_STATES)
-    price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     time_limit = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):

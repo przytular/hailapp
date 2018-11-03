@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 import os
+import environ
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '^b*cz(gw%-^(p%fs07@&%u*m*e@b_d4fgxjv$^cu61)4pfo&0+'
+env = environ.Env()
+env_file = os.path.join(BASE_DIR, '.env')
+env.read_env(env_file)
 
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='^b*cz(gw%-^(p%fs07@&%u*m*e@b_d4fgxjv$^cu61)4pzd&0+')
+DEBUG = env.bool('DJANGO_DEBUG', False)
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
