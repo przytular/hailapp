@@ -22,7 +22,7 @@ class NewAdjusterForm(forms.ModelForm):
 
 
 class ClaimForm(forms.ModelForm):
-	price = forms.DecimalField(min_value=0.01)
+	price = forms.DecimalField(min_value=0.00)
 	time_limit = forms.DateTimeField(input_formats=['%Y-%m-%d %I:%M %p'])
 
 	class Meta:
