@@ -6,7 +6,7 @@
 {% endblock extendhead %}
 
 {% block content %}
-<div class="container">
+<div class="container mb-5">
 	<form action="" method="post">
 	{% csrf_token %}
 		<div class="row">
@@ -28,6 +28,7 @@
 				<h3>Client info</h3>
 				<label for="first_name">First name</label>
 				{{ form.first_name }}
+				{{ form.first_name.errors }}
 				<label for="last_name">Last name</label>
 				{{ form.last_name }}
 				<label for="phone">Phone</label>
@@ -48,9 +49,14 @@
 				{{ form.loss_no }}
 				<label for="date_of_loss">Date of loss</label>
 				{{ form.date_of_loss }}
+				<label for="price">Price ($)</label>
+				{{ form.price }}
+				<label for="price">Time limit</label>
+				{{ form.time_limit }}
 
-				<h3><small>Adjuster(s):</small></h3>
-				{{ form.assigned_adjuster }}
+				<h3><small>Adjusters</small></h3>
+				{{ form.adjusters }}
+
 				<input id="submit_claim" type="submit" value="SUBMIT FORM" class="btn btn-primary"/>
 			</div>
 			<div class="col-sm-6">
@@ -100,14 +106,20 @@
 {% endblock content %}
 
 {% block extendfoot %}
-<script src="{% static 'dashboard/js/bootstrap-datepicker.js' %}"></script>
 <script type="text/javascript">
 
 $(document).ready(function () {
 
-	$('#id_date_of_loss').datepicker({
-		format: "yyyy-mm-dd"
-	});
+	$('#id_date_of_loss').flatpickr({
+        dateFormat: "Y-m-d",
+    });
+
+    $('#id_time_limit').flatpickr({
+        enableTime: true,
+        dateFormat: "Y-m-d h:i K",
+    });
+
+    $('#id_adjusters').select2();
 
 	$(".close_field_form").on('click', function() {
 		$(this).parent().remove();

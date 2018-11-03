@@ -19,6 +19,7 @@ class LocationUpdate(APIView):
 		longitude = request.POST.get('longitude', None)
 		adjuster = request.user.adjuster
 		if latitude and longitude:
+			print("LocUp {} {}".format(latitude, longitude))
 			adjuster.lng = longitude
 			adjuster.lat = latitude
 			adjuster.save()
@@ -32,7 +33,7 @@ class ClaimsAPI(ListAPIView):
 
 	def get_queryset(self):
 		try:
-			queryset = Claim.objects.filter(assigned_adjuster=self.request.user.adjuster)
+			queryset = Claim.objects.filter(adjusters=self.request.user.adjuster)
 		except:
 			raise PermissionDenied
 		return queryset
@@ -42,13 +43,8 @@ class PushIDUpdateAPI(APIView):
 	def post(self, request, format=None):
 		push_id = request.POST.get('push_id', None)
 		if push_id:
-
-			try:
-				apns = APNSDevice.objects.get(user=request.user)
-				apns.registration_id = push_id
-			except APNSDevice.DoesNotExist:
-				APNSDevice.objects.create(user=request.user, registration_id=push_id)
-
+			apns, crt = APNSDevice.objects.get_or_create(registration_id=push_id)
+			apns.user = request.user
 			apns.save()
 			return Response("OK")
 		else:

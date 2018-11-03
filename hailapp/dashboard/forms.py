@@ -22,12 +22,14 @@ class NewAdjusterForm(forms.ModelForm):
 
 
 class ClaimForm(forms.ModelForm):
+	price = forms.DecimalField(min_value=0.01)
+	time_limit = forms.DateTimeField(input_formats=['%Y-%m-%d %I:%M %p'])
 
 	class Meta:
 		model = Claim
 		fields = ['first_name', 'last_name', 'addr_street_1', 'addr_street_1', 'addr_street_2', 
 				  'city', 'postal_code', 'phone', 'policy_no', 'loss_no', 'date_of_loss', 
-				  'assigned_adjuster']
+				  'adjusters', 'price', 'time_limit']
 
 	def __init__(self, *args, **kwargs):
 		form = super(ClaimForm, self).__init__(*args, **kwargs)

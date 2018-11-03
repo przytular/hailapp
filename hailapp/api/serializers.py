@@ -11,7 +11,7 @@ class ClaimFieldSerializer(serializers.ModelSerializer):
 class ClaimSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Claim
-		exclude = ['assigned_adjuster']
+		exclude = ['adjusters']
 
 
 class ClaimFieldPhotoSerializer(serializers.Serializer):

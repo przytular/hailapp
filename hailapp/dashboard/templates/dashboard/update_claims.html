@@ -49,9 +49,14 @@
 				{{ form.loss_no }}
 				<label for="date_of_loss">Date of loss</label>
 				{{ form.date_of_loss }}
+				<label for="price">Price ($)</label>
+				{{ form.price }}
+				<label for="price">Time limit</label>
+				{{ form.time_limit }}
 
-				<h3><small>Adjuster(s):</small></h3>
-				{{ form.assigned_adjuster }}
+				<h3><small>Adjusters</small></h3>
+				{{ form.adjusters }}
+
 				<input id="submit_claim" type="submit" value="Update claim" class="btn btn-primary"/>
 			</div>
 			<div class="col-sm-6">
@@ -110,9 +115,16 @@
 
 $(document).ready(function () {
 
-	$('#id_date_of_loss').datepicker({
-		format: "yyyy-mm-dd"
-	});
+	$('#id_date_of_loss').flatpickr({
+        dateFormat: "Y-m-d",
+    });
+
+    $('#id_time_limit').flatpickr({
+        enableTime: true,
+        dateFormat: "Y-m-d h:i K",
+    });
+
+    $('#id_adjusters').select2();
 
 	var fields_form = $('.field_fields').clone()
 	$("#new_field_btn").on('click', function() {

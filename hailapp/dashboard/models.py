@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from datetime import datetime
+from decimal import Decimal
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -36,7 +37,7 @@ class Adjuster(models.Model):
     lat = models.CharField(max_length=20, blank=True)
     lng = models.CharField(max_length=20, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 
     @property
@@ -48,7 +49,7 @@ class Adjuster(models.Model):
 class Claim(models.Model):
     # Meta
     created = models.DateTimeField(auto_now_add=True)
-    assigned_adjuster = models.ForeignKey(Adjuster, null=True, blank=True)
+    adjusters = models.ManyToManyField(Adjuster, blank=True)
 
     # Client information
     first_name = models.CharField(max_length=50)
@@ -64,9 +65,10 @@ class Claim(models.Model):
     loss_no = models.CharField(max_length=50, blank=True)
     date_of_loss = models.DateField(null=True, blank=True)
     state = models.CharField(max_length=100, default='started', choices=CLAIM_STATES)
+    price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    time_limit = models.DateTimeField(blank=True, null=True)
 
-
-    def __unicode__(self):
+    def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 
     class Meta:
@@ -74,11 +76,14 @@ class Claim(models.Model):
 
     @property
     def assigned(self):
-        aa = self.assigned_adjuster
-        if not aa:
-            return "No assignment"
+        return ", ".join([adj.full_name for adj in self.adjusters.all()])
+
+    @property
+    def time_left(self):
+        if self.time_limit:
+            return datetime.strftime(self.time_limit, "%Y-%m-%d %H:%M")
         else:
-            return aa
+            return "No limit"
 
 
 class ClaimField(models.Model):
@@ -94,6 +99,7 @@ class ClaimField(models.Model):
     loss = models.DecimalField(default=0.0, max_digits=6, decimal_places=2)
     completed = models.BooleanField(default=False)
     photo = models.ImageField(upload_to='fields', blank=True, null=True)
+
 
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

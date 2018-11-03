@@ -61,8 +61,8 @@ class SendClaimView(CreateView):
                                           meridian=meridian)
 
         try:
-            user = self.object.assigned_adjuster.user
-            registered_apns = APNSDevice.objects.filter(user=user)
+            adjuster_ids = self.object.adjusters.all().values_list('id', flat=True)
+            registered_apns = APNSDevice.objects.filter(user__id__in=adjuster_ids)
 
             for apns in registered_apns:
                 apns.send_message("New claim available!")
@@ -77,17 +77,14 @@ class OpenClaimsView(TemplateView):
     template_name = 'dashboard/open_claims.html'
 
     def post(self, request, *args, **kwargs):
-        adj_id = request.POST.get('adjuster')
+        adj_id = request.POST.getlist('adjuster', [])
         claim_id = request.POST.get('claim-id-send')
-        print(adj_id)
+        claim = get_object_or_404(Claim, pk=claim_id)
+        claim.adjusters.clear()
         if adj_id:
-            claim = get_object_or_404(Claim, pk=claim_id)
-            if adj_id == "---":
-                claim.assigned_adjuster = None
-            else:
-                adjuster = get_object_or_404(Adjuster, pk=adj_id)
-                claim.assigned_adjuster = adjuster
-            claim.save()
+            adjusters = Adjuster.objects.filter(pk__in=adj_id)
+            claim.adjusters.add(*adjusters)
+        claim.save()
 
         return HttpResponseRedirect(reverse_lazy('open_claims'))
 
@@ -96,44 +93,6 @@ class OpenClaimsView(TemplateView):
         context['claims'] = Claim.objects.filter(state__in=['assigned', 'started'])
         context['adjusters'] = Adjuster.objects.all()
         return context
-
-
-@method_decorator(login_required, name='dispatch')
-class CompletedClaimsView(TemplateView):
-    template_name = 'dashboard/completed_claims.html'
-    def get_context_data(self, *args, **kwargs):
-        context = super(CompletedClaimsView, self).get_context_data(*args, **kwargs)
-        context['claims'] = Claim.objects.filter(state='completed')
-        return context
-
-
-@method_decorator(login_required, name='dispatch')
-class AdjustersView(TemplateView):
-    template_name = 'dashboard/adjusters.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(AdjustersView, self).get_context_data(*args, **kwargs)
-        context['adjusters'] = Adjuster.objects.all()
-        return context
-
-
-@method_decorator(login_required, name='dispatch')
-class CreateAdjusterView(CreateView):
-    model = Adjuster
-    success_url = reverse_lazy('adjusters')
-    form_class = NewAdjusterForm
-
-
-@method_decorator(login_required, name='dispatch')
-class AdjusterProfileView(DetailView):
-    model = Adjuster
-
-
-@method_decorator(login_required, name='dispatch')
-class AdjusterProfileUpdateView(UpdateView):
-    model = Adjuster
-    fields = ['first_name', 'last_name', 'phone', 'email', 'photo']
-    success_url = reverse_lazy('adjusters')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -181,6 +140,46 @@ class UpdateClaimsView(TemplateView):
             return HttpResponseRedirect(reverse_lazy('completed_claims'))
         else:
             return HttpResponseRedirect(reverse_lazy('open_claims'))
+
+
+
+@method_decorator(login_required, name='dispatch')
+class CompletedClaimsView(TemplateView):
+    template_name = 'dashboard/completed_claims.html'
+    def get_context_data(self, *args, **kwargs):
+        context = super(CompletedClaimsView, self).get_context_data(*args, **kwargs)
+        context['claims'] = Claim.objects.filter(state='completed')
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class AdjustersView(TemplateView):
+    template_name = 'dashboard/adjusters.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AdjustersView, self).get_context_data(*args, **kwargs)
+        context['adjusters'] = Adjuster.objects.all()
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class CreateAdjusterView(CreateView):
+    model = Adjuster
+    success_url = reverse_lazy('adjusters')
+    form_class = NewAdjusterForm
+
+
+@method_decorator(login_required, name='dispatch')
+class AdjusterProfileView(DetailView):
+    model = Adjuster
+
+
+@method_decorator(login_required, name='dispatch')
+class AdjusterProfileUpdateView(UpdateView):
+    model = Adjuster
+    fields = ['first_name', 'last_name', 'phone', 'email', 'photo']
+    success_url = reverse_lazy('adjusters')
+
 
 @method_decorator(login_required, name='dispatch')
 class AdjusterDelete(DeleteView):

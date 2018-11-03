@@ -16,8 +16,7 @@
         {% csrf_token %}
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">Assign to</label>
-            <select id="adjuster" name="adjuster" class="form-control">
-              <option value="---">---</option>
+            <select id="adjuster" name="adjuster" class="form-control" multiple>
             {% for adjuster in adjusters %}
             	<option value="{{ adjuster.pk }}">{{ adjuster.full_name }}</option>
             {% endfor %}
@@ -33,26 +32,32 @@
     </div>
   </div>
 </div>
-<div class="container">
+<div class="container-fluid">
 <h1>Open claims</h1>
-<table class="table">
+<table class="table table-striped">
 <tbody>
 	<thead>
 		<tr>
 			<th>Created</th>
 			<th>Client</th>
-			<th>Assigned</th>
+			<th>Assigned to</th>
 			<th>Policy No.</th>
+      <th>Price</th>
+      <th>Time left</th>
+      <th>Actions</th>
 		</tr>
 	</thead>
 	{% for obj in claims %}
 	<tr>
 		<td>{{ obj.created }}</td>
 		<td>{{ obj.first_name }} {{ obj.last_name }}</td>
-		<td>{{ obj.assigned }} <a data-toggle="modal" data-claim="{{ obj.pk }}" data-target="#assigned_modal" href="#"><i class="fa fa-repeat" data-claim="{{ obj.id }}" aria-hidden="true"></i></a></td>
+		<td>{{ obj.assigned }}</td>
 		<td>{{ obj.policy_no }}</td>
+    <td>{{ obj.price }}</td>
+    <td data-pk='{{ obj.pk }}' class="time-left tl-{{ obj.pk }}">{{ obj.time_left }}</td>
 		<td>
-			<a href="{% url 'update_claim' obj.pk %}" class="btn btn-sm btn-link">Update</a>
+      <a class="btn btn-sm btn-link" data-toggle="modal" data-claim="{{ obj.pk }}" data-target="#assigned_modal" href="#"><i class="fa fa-user" data-claim="{{ obj.id }}" aria-hidden="true"></i> Reassign</a>
+      <a href="{% url 'update_claim' obj.pk %}" class="btn btn-sm btn-link"><i class="fa fa-user" data-claim="{{ obj.id }}" aria-hidden="true"></i> Update</a>
 		</td>
 	</tr>
 	{% endfor %}
@@ -61,10 +66,41 @@
 {% endblock %}
 {% block extendfoot %}
 <script type="text/javascript">
-$('#assigned_modal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget)
-  var claim_id = button.data('claim')
-  $('input[name="claim-id-send"').val(claim_id)
-})
+$(function () {
+  $('#assigned_modal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var claim_id = button.data('claim')
+    $('input[name="claim-id-send"').val(claim_id)
+    $('#adjuster').select2();
+  });
+
+  function set_countdown(pk, countDownDate, timer) {
+    var now = new Date().getTime();
+    var distance = countDownDate - now;
+
+    var hours = Math.floor((distance / (1000 * 60 * 60)));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    html_cd = hours + "h " + minutes + "m " + seconds + "s";
+    $(".tl-"+pk).html(html_cd);
+    if (distance < 0) {
+      clearInterval(timer);
+      $(".tl-"+pk).html("EXPIRED");
+    }
+  }
+
+  $('.time-left').each(function() {
+    var get_datetime = $(this).html();
+    if (get_datetime != "No limit") {
+      var countDownDate = new Date(get_datetime).getTime();
+      $(this).html('');
+      var pk = $(this).data('pk');
+      var timer = setInterval(function() {
+        set_countdown(pk, countDownDate, timer)
+      }, 1000);
+    }
+  });
+});
 </script>
 {% endblock %}
