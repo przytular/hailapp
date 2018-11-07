@@ -32,8 +32,7 @@ class Adjuster(models.Model):
     last_name = models.CharField(max_length=20)
     phone = models.CharField(max_length=20, blank=True)
     email = models.EmailField()
-    photo = models.ImageField(upload_to='adjusters', blank=True,
-                        default='person-placeholder.png')
+    photo = models.ImageField(upload_to='adjusters', blank=True, default='person-placeholder.png')
     lat = models.CharField(max_length=20, blank=True)
     lng = models.CharField(max_length=20, blank=True)
 
@@ -65,7 +64,7 @@ class Claim(models.Model):
     loss_no = models.CharField(max_length=50, blank=True)
     date_of_loss = models.DateField(null=True, blank=True)
     state = models.CharField(max_length=100, default='started', choices=CLAIM_STATES)
-    price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00, null=True)
     time_limit = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
@@ -105,6 +104,7 @@ class ClaimField(models.Model):
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
 
 @receiver(post_delete, sender=Adjuster)
 def ensure_profile_exists(sender, instance, **kwargs):
