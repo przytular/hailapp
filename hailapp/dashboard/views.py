@@ -40,7 +40,6 @@ class SendClaimView(CreateView):
         response = super(SendClaimView, self).form_valid(form)
 
         post = self.request.POST
-
         for i, x in enumerate(post.getlist('type')):
             if x != '':
                 type = post.getlist('type')[i]
@@ -90,7 +89,7 @@ class OpenClaimsView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(OpenClaimsView, self).get_context_data(*args, **kwargs)
-        context['claims'] = Claim.objects.filter(state__in=['assigned', 'started'])
+        context['claims'] = Claim.objects.filter(state__in=['open', 'started'])
         context['adjusters'] = Adjuster.objects.all()
         return context
 
