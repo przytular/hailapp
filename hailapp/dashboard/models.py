@@ -71,7 +71,7 @@ class Claim(models.Model):
         return "{} {}".format(self.first_name, self.last_name)
 
     class Meta:
-        ordering = ['created']
+        ordering = ['-created']
 
     @property
     def assigned(self):
@@ -83,6 +83,10 @@ class Claim(models.Model):
             return datetime.strftime(self.time_limit, "%Y-%m-%d %H:%M")
         else:
             return "No limit"
+
+    @property
+    def price_name(self):
+        return self.price if self.price else "No price set"
 
 
 class ClaimField(models.Model):

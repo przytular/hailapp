@@ -53,7 +53,7 @@
 		<td>{{ obj.first_name }} {{ obj.last_name }}</td>
 		<td>{{ obj.assigned }}</td>
 		<td>{{ obj.policy_no }}</td>
-    <td>{{ obj.price }}</td>
+    <td>{{ obj.price_name }}</td>
     <td data-pk='{{ obj.pk }}' class="time-left tl-{{ obj.pk }}">{{ obj.time_left }}</td>
 		<td>
       <a class="btn btn-sm btn-link" data-toggle="modal" data-claim="{{ obj.pk }}" data-target="#assigned_modal" href="#"><i class="fa fa-user" data-claim="{{ obj.id }}" aria-hidden="true"></i> Reassign</a>
