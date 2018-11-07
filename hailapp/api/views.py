@@ -33,11 +33,21 @@ class ClaimsAPI(ListAPIView):
 
 	def get_queryset(self):
 		try:
-			queryset = Claim.objects.filter(adjusters=self.request.user.adjuster)
+			queryset = Claim.objects.filter(adjusters=self.request.user.adjuster).exclude(state='open')
 		except:
 			raise PermissionDenied
 		return queryset
 
+
+class OpenClaimsAPI(ListAPIView):
+	serializer_class = ClaimSerializer
+
+	def get_queryset(self):
+		try:
+			queryset = Claim.objects.filter(state='open', adjusters=self.request.user.adjuster)
+		except:
+			raise PermissionDenied
+		return queryset
 
 class PushIDUpdateAPI(APIView):
 	def post(self, request, format=None):
